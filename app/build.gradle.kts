@@ -6,12 +6,12 @@ plugins {
 
 android {
     namespace = "com.cakabara.librarybooks_api"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.cakabara.librarybooks_api"
         minSdk = 24
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 

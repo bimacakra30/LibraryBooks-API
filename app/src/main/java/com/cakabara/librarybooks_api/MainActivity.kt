@@ -54,7 +54,7 @@ class MainActivity : AppCompatActivity() {
             myRef.child(book.id.toString()).setValue(book)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
-                        Toast.makeText(this, "Data buku berhasil dikirim", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, "Data buku berhasil dikirim kedalam Firebase", Toast.LENGTH_SHORT).show()
                     } else {
                         Toast.makeText(this, "Gagal mengirim data: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
                     }
