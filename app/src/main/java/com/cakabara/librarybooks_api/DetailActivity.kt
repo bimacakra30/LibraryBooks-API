@@ -1,7 +1,7 @@
 package com.cakabara.librarybooks_api
+
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
 import com.cakabara.librarybooks_api.databinding.ActivityDetailBinding
 
@@ -17,16 +17,17 @@ class DetailActivity : AppCompatActivity() {
 
         val bookId = intent.getIntExtra("BOOK_ID", -1)
         if (bookId != -1) {
-            val repository = Repository(RetrofitInstance.apiService)
+            val bookDao = AppDatabase.getDatabase(this).bookDao()
+            val repository = Repository(RetrofitInstance.apiService, this, bookDao)
             detailViewModel = BooksViewModel(repository)
 
             observeViewModel()
-            detailViewModel.fetchBookById(bookId) // Fetch the book details by ID
+            detailViewModel.fetchBookById(bookId)
         }
     }
 
     private fun observeViewModel() {
-        detailViewModel.bookLiveData.observe(this, Observer { book ->
+        detailViewModel.bookLiveData.observe(this){ book ->
             binding.tvDetailJudul.text = book.title
             binding.tvDetailGenre.text = "Genre: ${book.genre}"
             binding.tvDetailPengarang.text = "Pengarang: ${book.author}"
@@ -36,6 +37,10 @@ class DetailActivity : AppCompatActivity() {
             Glide.with(binding.ivDetailCover.context)
                 .load(book.image_url)
                 .into(binding.ivDetailCover)
-        })
+        }
+
+        detailViewModel.errorLiveData.observe(this) { errorMessage ->
+            binding.tvDetailDeskripsi.text = errorMessage
+        }
     }
 }
